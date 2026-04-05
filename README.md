@@ -21,6 +21,21 @@ The current scope is intentionally focused:
 - Run: uvicorn api.main:app --reload --port 8000
 - Test: pytest -q
 
+## Simple Frontend Test
+
+1. Open `frontend/index.html` in your browser.
+2. Keep API Base URL set to your Cloud Run URL.
+3. Click `Check Health`.
+4. Enter any goal and click `Execute Goal`.
+
+If direct file open has CORS restrictions in your browser, run a static server:
+
+```bash
+python -m http.server 5500
+```
+
+Then open `http://127.0.0.1:5500/frontend/`.
+
 ## Clean API Response
 
 The execute endpoint returns a concise response payload for demo use:

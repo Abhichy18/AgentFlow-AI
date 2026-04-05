@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgentFlow AI Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-shape bg-shape-1"></div>
+  <div class="bg-shape bg-shape-2"></div>
+
+  <main class="app-shell">
+    <header class="hero">
+      <p class="eyebrow">AgentFlow AI</p>
+      <h1>Goal to Execution Demo Console</h1>
+      <p class="subtitle">Type a goal, hit execute, and inspect tasks plus schedule in one response.</p>
+    </header>
+
+    <section class="panel controls">
+      <div class="field-row">
+        <label for="apiBaseUrl">API Base URL</label>
+        <input id="apiBaseUrl" type="url" value="" placeholder="Auto (current host)" />
+      </div>
+
+      <div class="field-row two-col">
+        <div>
+          <label for="userId">User ID</label>
+          <input id="userId" type="number" min="1" value="1" />
+        </div>
+        <div>
+          <label for="goalText">Goal Text</label>
+          <textarea id="goalText" rows="3">Prepare for final project demo in 1 day</textarea>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="executeBtn">Execute Goal</button>
+        <button id="healthBtn" class="ghost">Check Health</button>
+      </div>
+
+      <p id="statusLine" class="status idle">Idle</p>
+    </section>
+
+    <section class="panel grid">
+      <article>
+        <h2>Planner Summary</h2>
+        <div id="summaryBox" class="mini-card">No data yet.</div>
+      </article>
+
+      <article>
+        <h2>Tasks</h2>
+        <div id="tasksBox" class="list-box">No tasks yet.</div>
+      </article>
+
+      <article>
+        <h2>Schedule</h2>
+        <div id="scheduleBox" class="list-box">No schedule yet.</div>
+      </article>
+
+      <article>
+        <h2>Raw JSON</h2>
+        <pre id="rawJson" class="raw">{}</pre>
+      </article>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
