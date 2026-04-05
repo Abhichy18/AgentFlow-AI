@@ -9,6 +9,10 @@ const summaryBoxEl = document.getElementById("summaryBox");
 const tasksBoxEl = document.getElementById("tasksBox");
 const scheduleBoxEl = document.getElementById("scheduleBox");
 const rawJsonEl = document.getElementById("rawJson");
+const metricTasksEl = document.getElementById("metricTasks");
+const metricScheduleEl = document.getElementById("metricSchedule");
+const metricModeEl = document.getElementById("metricMode");
+const quickGoalButtons = document.querySelectorAll(".chip-goal");
 
 if (!apiBaseUrlEl.value.trim()) {
   apiBaseUrlEl.value = window.location.origin;
@@ -65,6 +69,16 @@ function renderSummary(data) {
     `<strong>Mode:</strong> ${mode}<br>` +
     `<strong>Model:</strong> ${model}<br>` +
     `<strong>Total Attempts:</strong> ${attempts}`;
+
+  metricModeEl.textContent = mode;
+}
+
+function renderMetrics(data) {
+  const taskCount = Array.isArray(data?.task_breakdown) ? data.task_breakdown.length : 0;
+  const scheduleCount = Array.isArray(data?.scheduled_events) ? data.scheduled_events.length : 0;
+
+  metricTasksEl.textContent = String(taskCount);
+  metricScheduleEl.textContent = String(scheduleCount);
 }
 
 async function executeGoal() {
@@ -98,6 +112,7 @@ async function executeGoal() {
     }
 
     renderSummary(data);
+    renderMetrics(data);
     renderTasks(data.task_breakdown);
     renderSchedule(data.scheduled_events);
     setStatus("Execution success.", "success");
@@ -139,3 +154,12 @@ async function checkHealth() {
 
 executeBtnEl.addEventListener("click", executeGoal);
 healthBtnEl.addEventListener("click", checkHealth);
+
+quickGoalButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const goal = button.getAttribute("data-goal") || "";
+    goalTextEl.value = goal;
+    goalTextEl.focus();
+    setStatus("Quick goal selected. Press Execute Goal.", "idle");
+  });
+});

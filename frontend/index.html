@@ -6,21 +6,31 @@
   <title>AgentFlow AI Demo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="bg-shape bg-shape-1"></div>
-  <div class="bg-shape bg-shape-2"></div>
+  <div class="bg-aurora bg-aurora-1"></div>
+  <div class="bg-aurora bg-aurora-2"></div>
+  <div class="grid-noise"></div>
 
   <main class="app-shell">
     <header class="hero">
-      <p class="eyebrow">AgentFlow AI</p>
-      <h1>Goal to Execution Demo Console</h1>
-      <p class="subtitle">Type a goal, hit execute, and inspect tasks plus schedule in one response.</p>
+      <div class="brand-row">
+        <p class="eyebrow">AgentFlow AI</p>
+        <span class="pill-live">Live Demo</span>
+      </div>
+      <h1>From Goal to Action Plan in One Run</h1>
+      <p class="subtitle">Enter a high-level goal. AgentFlow generates notes-aware tasks and schedule blocks using your deployed multi-agent backend.</p>
+
+      <div class="quick-goals" aria-label="Quick goals">
+        <button class="chip-goal" data-goal="Prepare DBMS exam in 3 days">DBMS Exam</button>
+        <button class="chip-goal" data-goal="Build CI/CD pipeline by tomorrow">CI/CD Setup</button>
+        <button class="chip-goal" data-goal="Complete React hooks mini project tonight">React Hooks</button>
+      </div>
     </header>
 
-    <section class="panel controls">
+    <section class="panel controls reveal">
       <div class="field-row">
         <label for="apiBaseUrl">API Base URL</label>
         <input id="apiBaseUrl" type="url" value="" placeholder="Auto (current host)" />
@@ -39,13 +49,28 @@
 
       <div class="actions">
         <button id="executeBtn">Execute Goal</button>
-        <button id="healthBtn" class="ghost">Check Health</button>
+        <button id="healthBtn" class="ghost">Health Check</button>
       </div>
 
       <p id="statusLine" class="status idle">Idle</p>
+
+      <div class="metrics">
+        <div class="metric-card">
+          <p class="metric-label">Tasks</p>
+          <p id="metricTasks" class="metric-value">0</p>
+        </div>
+        <div class="metric-card">
+          <p class="metric-label">Scheduled</p>
+          <p id="metricSchedule" class="metric-value">0</p>
+        </div>
+        <div class="metric-card">
+          <p class="metric-label">Planner Mode</p>
+          <p id="metricMode" class="metric-value small">-</p>
+        </div>
+      </div>
     </section>
 
-    <section class="panel grid">
+    <section class="panel grid reveal">
       <article>
         <h2>Planner Summary</h2>
         <div id="summaryBox" class="mini-card">No data yet.</div>
