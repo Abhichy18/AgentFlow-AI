@@ -5,6 +5,7 @@ pydantic-settings
 sqlalchemy
 langchain
 langchain-openai
+langchain-community
 langgraph
 faiss-cpu
 python-dotenv
