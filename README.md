@@ -1,85 +1,204 @@
-# AgentFlow AI
+<div align="center">
+  <img src="assets/hero_banner_main.png" alt="AgentFlow AI Hero Banner" width="74%">
 
-OpenRouter-ready Goal-to-Execution backend built with FastAPI, LangGraph, SQLite, and FAISS.
+  # AgentFlow AI
 
-The current scope is intentionally focused:
-- Stable multi-agent coordination
-- End-to-end workflow: goal -> tasks -> schedule -> response
-- Clean API output for demo presentation
+  **Multi-agent intelligence that converts high-level goals into structured, executable workflows.**
 
-## Quick Start
+  [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg?style=for-the-badge&logo=python)](https://python.org)
+  [![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-00a65a.svg?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
+  [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
+  [![Status](https://img.shields.io/badge/Status-Live-success.svg?style=for-the-badge)](https://agentflow-api-rln6tjgjsq-el.a.run.app/health)
+</div>
 
-1. Create a Python virtual environment.
-2. Install dependencies from requirements.txt.
-3. Copy .env.example to .env and set OPENROUTER_API_KEY.
-4. Run database and FAISS seed script.
-5. Start FastAPI with uvicorn.
 
-## Commands
+> **AgentFlow AI is an API-first multi-agent system that takes your goal and returns a full execution plan.**
+> It produces context-aware tasks, scheduled time slots, and a structured machine-readable response suitable for frontend and automation use.
 
-- Seed: python -m memory.init_db
-- Run: uvicorn api.main:app --reload --port 8000
-- Test: pytest -q
+---
 
-## Simple Frontend Test
+## 🛑 The Real World Problem vs The AgentFlow Solution
 
-1. Open `frontend/index.html` in your browser.
-2. Keep API Base URL set to your Cloud Run URL.
-3. Click `Check Health`.
-4. Enter any goal and click `Execute Goal`.
+Most productivity tools and AI assistants fail at the last mile. Users are forced to manually break goals down, scheduling is completely disconnected, and outputs are hard to execute immediately.
 
-If direct file open has CORS restrictions in your browser, run a static server:
+<div align="center">
+  <img src="assets/problem_solution_main.png" alt="Chaos vs Order Illustration" width="74%">
+</div>
+
+### 💡 How AgentFlow Fixes This
+Through coordinated agents, tool integrations, and persistent memory:
+1. **Understands The Goal** — Converts a high-level objective into execution context.
+2. **Retrieves Memory (RAG)** — Uses FAISS vector search to inject relevant past notes.
+3. **Generates Tasks** — Produces actionable tasks with priority and effort estimates.
+4. **Reserves The Time** — Allocates practical schedule blocks via calendar bindings.
+5. **Returns Pure JSON** — Ready for any frontend GUI or internal automation tool.
+
+---
+
+## 🧠 System Architecture
+
+AgentFlow is a state-driven multi-agent topology using **LangGraph**.
+
+<div align="center">
+  <img src="assets/architecture_diagram_main.png" alt="AgentFlow Architecture Diagram" width="74%">
+</div>
+
+### Multi-Agent Hierarchy
+- 👑 **Master Agent**: Validates input, selects strategy, and orchestrates.
+- 📚 **Notes Agent**: Uses vector memory to pull historical context.
+- ⚙️ **Task Agent**: Persists actionable steps in SQLite.
+- 🗓️ **Scheduler Agent**: Maps tasks to actual available time blocks.
+- 🚀 **Execution Agent**: Summarizes execution and packages the API payload.
+
+### Robust Reliability Under The Hood
+- **Retry + Exponential Backoff** for external model calls.
+- **Failover Chain**: Uses a hierarchy of primary models, gracefully falling back to simpler models if needed.
+- **Deterministic Fallback**: Can produce a basic plan even when all LLMs fail.
+
+---
+
+## ⚙️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| **Backend API** | FastAPI (Python) |
+| **Agent Core** | LangGraph, OpenRouter |
+| **Relational DB** | SQLite + SQLAlchemy |
+| **Vector Search (RAG)** | FAISS |
+| **Hosting** | Google Cloud Run |
+| **Frontend** | Pure HTML/CSS/JS (Served by FastAPI) |
+
+---
+
+## 🚀 Live Demo & API Usage
+
+**View the Live Demo:** [AgentFlow Live Frontend](https://agentflow-api-rln6tjgjsq-el.a.run.app/frontend/) <br>
+**Check the Docs:** [Swagger UI](https://agentflow-api-rln6tjgjsq-el.a.run.app/docs)
+
+### API Example
+Submit a high-level goal directly to the execute endpoint.
 
 ```bash
-python -m http.server 5500
+curl -X POST "https://agentflow-api-rln6tjgjsq-el.a.run.app/api/v1/execute" \
+  -H "Content-Type: application/json" \
+  -d '{"user_id":1,"goal_text":"Prepare for final exams in 2 days"}'
 ```
 
-Then open `http://127.0.0.1:5500/frontend/`.
-
-## Clean API Response
-
-The execute endpoint returns a concise response payload for demo use:
+<details>
+<summary><b>Click to expand full JSON Output</b></summary>
 
 ```json
 {
-	"status": "success",
-	"goal": "Plan DSA revision and mock interview practice for 2 days",
-	"goal_id": 12,
-	"supporting_notes": ["..."],
-	"task_breakdown": [{"id": 1, "title": "..."}],
-	"scheduled_events": [{"task_title": "...", "slot": "..."}],
-	"execution_summary": "Goal processed successfully with 3 tasks and 3 scheduled events.",
-	"planner_model_used": "meta-llama/llama-3.1-8b-instruct:free",
-	"planner_mode": "llm",
-	"planner_diagnostics_summary": {
-		"total_attempts": 1,
-		"successful_model": "meta-llama/llama-3.1-8b-instruct:free"
-	}
+  "status": "success",
+  "goal": "Prepare for final exams in 2 days",
+  "task_breakdown": [
+    {"title": "Understand the scope", "priority": "high", "estimated_minutes": 45},
+    {"title": "Focused implementation session", "priority": "high", "estimated_minutes": 60},
+    {"title": "Review and revision", "priority": "medium", "estimated_minutes": 30}
+  ],
+  "scheduled_events": [
+    {"task_title": "Understand the scope", "slot": "2026-04-06T10:00:00"},
+    {"task_title": "Focused implementation session", "slot": "2026-04-06T11:00:00"}
+  ],
+  "planner_diagnostics_summary": {
+    "total_attempts": 1,
+    "successful_model": "anthropic/claude-3.5-sonnet"
+  }
 }
 ```
+</details>
 
-## Deployment Readiness
+---
 
-1. Environment
-- Set OPENROUTER_API_KEY in .env
-- Keep fallback models configured in OPENROUTER_FALLBACK_MODELS
+## 🛠️ Local Setup
 
-2. Run checks before deploy
-- pytest -q
-- Smoke call to POST /api/v1/execute
+1. **Clone & Virtual Env:**
+   ```bash
+   git clone https://github.com/Abhichy18/AgentFlow-AI.git
+   cd AgentFlow-AI
+   python -m venv .venv
+   ```
+   *Windows:* `.\.venv\Scripts\Activate.ps1` | *Mac/Linux:* `source .venv/bin/activate`
 
-3. Production run command
-- uvicorn api.main:app --host 0.0.0.0 --port 8000
+2. **Dependencies & Env:**
+  ```bash
+  pip install -r requirements.txt
+  ```
+  Windows PowerShell:
+  ```powershell
+  Copy-Item .env.example .env
+  ```
+  Mac/Linux:
+  ```bash
+  cp .env.example .env
+  ```
+  Edit .env and supply OPENROUTER_API_KEY.
 
-4. Minimal deployment targets
-- Render Web Service
-- Railway
-- Any VPS with Python 3.11+
+3. **Initialize DB & Run:**
+   ```bash
+   python -m memory.init_db
+   uvicorn api.main:app --reload --port 8000
+   ```
 
-## Demo Readiness Checklist
+---
 
-1. Start API server and verify /health.
-2. Send one goal to /api/v1/execute.
-3. Show task_breakdown and scheduled_events.
-4. Show planner_diagnostics_summary to prove reliability.
-5. Keep one backup goal prompt ready in case network is unstable.
+## 📁 Project Structure
+
+```text
+api/                FastAPI entrypoints and routes
+agents/             Specialist agent node implementations
+workflows/          LangGraph workflow construction
+memory/             SQLite and FAISS memory utilities
+tools/              MCP-style wrappers (notes, tasks, calendar)
+frontend/           Static UI (HTML/CSS/JS)
+tests/              API-level tests
+assets/             README and UI image assets
+```
+
+---
+
+## 🧪 Testing & Quality Checks
+
+Run the test suite:
+
+```bash
+pytest -q
+```
+
+Current checks validate core API behavior, including:
+- Health endpoint response
+- Invalid request handling
+- Goal execution endpoint success path
+
+---
+
+## 🧷 Runtime & Dependency Policy
+
+- **Python runtime target:** 3.10+
+- **Dependency management:** `requirements.txt` (unpinned major/minor ranges)
+- **Environment variables:** configured through `.env` for local development and Secret Manager in Cloud Run
+
+For production hardening, add a pinned lockfile and automated dependency updates.
+
+---
+
+## ⚠️ Known Limitations
+
+1. Calendar scheduling currently uses a mock provider, not live Google Calendar OAuth.
+2. SQLite is suitable for demo and low-concurrency scenarios; production should migrate to PostgreSQL.
+3. Authentication and user-level access control are not yet enabled.
+4. Test coverage is focused on API behavior and does not yet include deep workflow integration tests.
+
+---
+
+## 🔮 Roadmap
+- [ ] Connect absolute Google Calendar OAuth bindings.
+- [ ] Implement fully durable PostgreSQL support.
+- [ ] Add JWT Authentication.
+- [ ] Build an execution Analytics Dashboard.
+
+---
+<p align="center">
+  <b>Built by AgentFlow Labs - Abhishek Choudhary</b><br>
+  <i>Taking Agentic AI to the edge.</i>
+</p>
