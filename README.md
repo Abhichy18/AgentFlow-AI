@@ -199,6 +199,6 @@ For production hardening, add a pinned lockfile and automated dependency updates
 
 ---
 <p align="center">
-  <b>Built by AgentFlow Labs - Abhishek Choudhary</b><br>
+  <b>Built by AgentFlow Labs - Abhishek Choudhary & Anushka Sharma</b><br>
   <i>Taking Agentic AI to the edge.</i>
 </p>
