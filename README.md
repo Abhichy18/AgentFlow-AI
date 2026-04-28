@@ -17,7 +17,7 @@
 
 ---
 
-## 🛑 The Real World Problem vs The AgentFlow Solution
+## 🛑 The Real World Problem vs The AgentFlow Solution.
 
 Most productivity tools and AI assistants fail at the last mile. Users are forced to manually break goals down, scheduling is completely disconnected, and outputs are hard to execute immediately.
 
